@@ -57,6 +57,8 @@ kasir-umkm/
 ├── index.html            # kerangka halaman
 ├── style.css             # tampilan + gaya struk cetak
 ├── app.js                # semua logika aplikasi
+├── tema.css, tema.js     # warna, sudut, huruf, nama usaha, mode
+├── AGENTS.md, .claude/   # panduan untuk AI (Claude, Cursor, Copilot)
 ├── sw.js                 # service worker (offline)
 ├── manifest.webmanifest  # info PWA
 ├── ikon.svg              # ikon aplikasi
@@ -64,11 +66,25 @@ kasir-umkm/
 ├── meta.json, LICENSE, README.md, ss.png
 ```
 
-## Ubah brand & warna
-- Warna: buka `style.css`, ubah variabel di `:root` (`--utama`, `--aksen`, `--latar`, dll).
-- Nama toko di struk: menu **Atur** di aplikasi.
+## Ganti warna & nama
+Semua warna, sudut, huruf, dan nama usaha diatur di dua berkas kecil (juga yang diubah otomatis oleh customizer di malikisaputra.biz.id/kode):
+- `tema.css`: `--tema-utama` (tombol, sorotan), `--tema-aksen` (grafik, produk terlaris, thumbnail), `--tema-radius` (sudut), `--tema-font` (huruf Google Fonts: Plus Jakarta Sans, Inter, Poppins, DM Sans, Space Grotesk, Nunito — ganti juga `href` pada `<link id="fontTema">` di `index.html`).
+- `tema.js`: `nama` (nama usaha di layar; dipakai sebagai nama toko bawaan selama belum diganti lewat menu **Atur**) dan `mode`: `"terang"`, `"gelap"`, atau `"auto"` (ikut setelan HP).
+
+Warna lain (versi muda/tua, latar, garis, mode gelap) diturunkan otomatis dengan `color-mix()` di `style.css`. Teks di atas warna utama selalu putih, jadi pilih warna utama yang cukup gelap (setara teal-700 / ungu-600) agar tetap terbaca.
+
+Warna per bagian: `tema.css` juga punya `--tema-latar` (latar halaman), `--tema-panel` (kartu/panel/form), `--tema-nav` (sidebar/header/nav bawah), `--tema-teks` (teks utama). Mode gelap memakai palet gelap paket kecuali customizer mengirim nilai bagian. Warna teks di atas nav & tombol utama dihitung otomatis (terang/gelap) dari luminansi.
+
+## Ubah brand lainnya
+- Nama toko di struk: menu **Atur** di aplikasi (setelah diganti di sini, `tema.js` tidak lagi menimpanya).
 - QRIS: simpan gambar QRIS tokomu (PNG/SVG), beri nama `qris.svg` (atau ubah `src` di `app.js`, cari `qris.svg`).
 - Ikon: ganti `ikon.svg`. Kalau berkas diubah, naikkan versi `CACHE` di `sw.js` (misal `kasir-umkm-v2`) agar HP mengambil versi baru.
+
+## Ubah pakai Claude
+Paket ini membawa Agent Skill di `.claude/skills/ubah-kasir-umkm/SKILL.md` (peta berkas, letak tema, cara menambah fitur, aturan aman) dan `AGENTS.md` untuk Cursor/Copilot/Codex.
+
+- **Claude Code / Claude Desktop**: buka folder paket ini; skill di `.claude/skills` terbaca otomatis. Tinggal minta, misal "tambah field barcode di produk".
+- **claude.ai**: unduh ZIP skill (tombol **Unduh Skill** di [malikisaputra.biz.id/kode](https://malikisaputra.biz.id/kode)), lalu di claude.ai buka **Customize › Skills › tombol "+" › Create skill › Upload a skill** dan pilih ZIP itu (folder skill sebagai akar ZIP). Syarat: **Code execution and file creation** aktif di **Settings › Capabilities** (paket Free/Pro/Max); di Team/Enterprise diatur oleh Owner. Sumber: support.claude.com/en/articles/12512180 (dicek 6 Nov 2026).
 
 ## Catatan penting
 - Data tersimpan di browser perangkat (localStorage). Menghapus data situs/browser = data hilang. **Rajin backup JSON** (misal tiap minggu) dan simpan di Google Drive.
